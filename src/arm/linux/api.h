@@ -24,6 +24,7 @@
 		char ro_mediatek_platform[CPUINFO_BUILD_PROP_VALUE_MAX];
 		char ro_arch[CPUINFO_BUILD_PROP_VALUE_MAX];
 		char ro_chipname[CPUINFO_BUILD_PROP_VALUE_MAX];
+		char ro_hardware_chipname[CPUINFO_BUILD_PROP_VALUE_MAX];
 	};
 #endif
 
@@ -152,6 +153,7 @@ struct cpuinfo_arm_linux_processor {
 	uint32_t midr;
 	enum cpuinfo_vendor vendor;
 	enum cpuinfo_uarch uarch;
+	uint32_t uarch_index;
 	/**
 	 * ID of the physical package which includes this logical processor.
 	 * The value is parsed from /sys/devices/system/cpu/cpu<N>/topology/physical_package_id
@@ -322,6 +324,9 @@ CPUINFO_INTERNAL struct cpuinfo_arm_chipset
 	CPUINFO_INTERNAL struct cpuinfo_arm_chipset
 		cpuinfo_arm_android_decode_chipset_from_ro_chipname(
 			const char ro_chipname[restrict static CPUINFO_BUILD_PROP_VALUE_MAX]);
+	CPUINFO_INTERNAL struct cpuinfo_arm_chipset
+		cpuinfo_arm_android_decode_chipset_from_ro_hardware_chipname(
+			const char ro_hardware_chipname[restrict static CPUINFO_BUILD_PROP_VALUE_MAX]);
 #endif
 
 CPUINFO_INTERNAL bool cpuinfo_arm_linux_detect_core_clusters_by_heuristic(
@@ -342,3 +347,6 @@ CPUINFO_INTERNAL uint32_t cpuinfo_arm_linux_detect_cluster_midr(
 	uint32_t max_processors,
 	uint32_t usable_processors,
 	struct cpuinfo_arm_linux_processor processors[restrict static max_processors]);
+
+extern CPUINFO_INTERNAL const uint32_t* cpuinfo_linux_cpu_to_uarch_index_map;
+extern CPUINFO_INTERNAL uint32_t cpuinfo_linux_cpu_to_uarch_index_map_entries;
